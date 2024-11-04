@@ -1,0 +1,305 @@
+swagger: '2.0'
+info:
+  description: 'Este é documentação de end-point REST Full do projeto Encurtador de Urls'
+  version: '1.0.0'
+  title: 'Encurtador de Urls'
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: 'apiteam@swagger.io'
+  license:
+    name: 'MIT'
+    url: 'https://opensource.org/licenses/MIT'
+host: 'localhost:3334'
+
+#basePath: ""
+
+tags:
+  - name: 'sessions'
+    description: 'Acesso ao sistema'
+  - name: 'user'
+    description: 'CRUD de usuários do sistema'
+  - name: 'urls'
+    description: 'encurtador de urls'
+schemes:
+  - 'http'
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: >-
+      Colocar descrição da autorização (ex:TEDDY {token} ).
+paths:
+  /sessions:
+    post:
+      tags:
+        - 'sessions'
+      summary: 'Authenticate'
+      description: ''
+      operationId: 'authentication'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Created Lines object'
+          required: true
+          schema:
+            $ref: '#/definitions/Sessions'
+      responses:
+        '201':
+          description: 'created'
+  /employee:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'Create user'
+      description: 'Crie o registro de usuarios do sistema'
+      operationId: 'createUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Created user object'
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: 'created'
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'Listagem de usuarios'
+      description: 'Lista de todos os usuarios cadastrados'
+      operationId: 'listUserAll'
+      produces:
+        - 'application/json'
+      parameters: []
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /employee/search:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'List Users'
+      description: 'Pesquise pelo nome de usuario cadastrado no sistema'
+      operationId: 'listUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'name'
+          in: 'query'
+          description: 'Search user'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /employee/{username}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'Update user'
+      description: 'Utualize o cadastro de usuario'
+      operationId: 'updateUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'username'
+          in: 'path'
+          description: 'Passar o username como parametro'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'Updated user object'
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: 'Created'
+        '400':
+          description: 'Bad Request'
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - 'user'
+      summary: 'Delete registro de usuario'
+      description: 'Deletar registro'
+      operationId: 'deleteUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'username'
+          in: 'path'
+          description: 'The name that needs to be deleted'
+          required: true
+          type: 'string'
+      responses:
+        '204':
+          description: 'No content'
+        '404':
+          description: 'User not found'
+  /urls:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - 'urls'
+      summary: 'Create urls'
+      description: 'criar url encurtada'
+      operationId: 'createUrl'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Created Url object'
+          required: true
+          schema:
+            $ref: '#/definitions/Url'
+      responses:
+        '201':
+          description: 'created'
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'urls'
+      summary: 'List Url'
+      description: 'List of Url registered in the system'
+      operationId: 'listUrlAll'
+      produces:
+        - 'application/json'
+      parameters: []
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+  /urls/{id}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - 'urls'
+      summary: 'Updated url de origem'
+      description: 'Update in url'
+      operationId: 'updateUrl'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'id that need to be updated'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'Updated work group object'
+          required: true
+          schema:
+            $ref: '#/definitions/Url'
+      responses:
+        '201':
+          description: 'Created'
+        '400':
+          description: 'Bad Request'
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - 'urls'
+      summary: 'Delete registro de Url'
+      description: 'Delete in Url'
+      operationId: 'deleteUrls'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          description: 'Id de registro da url que deseja deletar'
+          required: true
+          type: 'string'
+      responses:
+        '204':
+          description: 'No content'
+        '404':
+          description: 'User not found'
+  /urls/search:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'urls'
+      summary: 'Procure o registro de Url encurtado,lembrando que somente as de seu usuario logado'
+      description: 'Search of Urls registered in the system'
+      operationId: 'listUrl'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'id'
+          in: 'query'
+          description: 'Pesquisar pelo id de registro da url'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'Successful Operation'
+        '400':
+          description: 'Bad Request'
+definitions:
+  Sessions:
+    type: 'object'
+    properties:
+      email:
+        type: 'string'
+      password:
+        type: 'string'
+    xml:
+      name: 'Sessions'
+  User:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      username:
+        type: 'string'
+      email:
+        type: 'string'
+      password:
+        type: 'string'
+      role:
+        type: 'string'
+      departament:
+        type: 'string'
+    xml:
+      name: 'User'
+  Url:
+    type: 'object'
+    properties:
+      originalUrl:
+        type: 'string'
+    xml:
+      name: 'Url'
+externalDocs:
+  description: 'Find out more about Swagger'
+  url: 'http://swagger.io'
